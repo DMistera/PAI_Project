@@ -1,0 +1,69 @@
+<form [formGroup]="form" id="container">
+
+    <h2>Create a Tournament</h2>
+    
+    <mat-form-field class="form-field">
+        <mat-label>Name</mat-label>
+        <input matInput [formControl]="name">
+        <mat-error *ngIf="name.invalid && name.errors.required">Name is required</mat-error>
+    </mat-form-field>
+
+    <p></p>
+
+    <mat-form-field class="form-field">
+        <mat-label>Discipline</mat-label>
+        <input matInput [formControl]="discipline">
+        <mat-error *ngIf="discipline.invalid && discipline.errors.required">Discipline is required</mat-error>
+    </mat-form-field>
+
+    <p></p>
+
+    <mat-form-field class="form-field">
+        <mat-label>Maximum Number of Players</mat-label>
+        <input matInput type="number" [formControl]="maxPlayers">
+        <mat-error *ngIf="maxPlayers.invalid && maxPlayers.errors.required">Maximum Number of Players is required</mat-error>
+    </mat-form-field>
+
+    <p></p>
+
+    <mat-form-field class="form-field">
+        <mat-label>Starting Date</mat-label>
+        <input matInput [min]="registrationDate.value ? registrationDate.value : today" [formControl]="startDate" [matDatepicker]="picker" >
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="startDate.invalid && startDate.errors.required">Starting Date is required</mat-error>
+    </mat-form-field>
+
+    <p></p>
+
+    <mat-form-field class="form-field">
+        <mat-label>Registration Closing Date</mat-label>
+        <input matInput [min]="today" [max]="startDate.value" [formControl]="registrationDate" [matDatepicker]="picker2" >
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+        <mat-error *ngIf="registrationDate.invalid && registrationDate.errors.required">Registration Closing Date is required</mat-error>
+    </mat-form-field>
+
+    <p></p>
+
+    <mat-form-field class="form-field">
+        <mat-label>Description</mat-label>
+        <textarea  matInput [formControl]="description"></textarea>
+    </mat-form-field>
+
+    <p></p>
+
+    
+    <mat-form-field class="form-field">
+        <mat-label>Address</mat-label>
+        <input matInput [formControl]="address">
+    </mat-form-field>
+
+    <p></p>
+
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+        <button mat-button (click)="back()">Cancel</button>
+    </mat-card-actions>
+
+</form>

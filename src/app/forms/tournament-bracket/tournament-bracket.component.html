@@ -1,0 +1,36 @@
+<div class="main" id="tournament">
+    <ul *ngFor="let i of range(maxRounds())" [class]="'round round-' + i" >
+		<li class="game game-spacer invisible">&nbsp;</li>
+		<ng-container  *ngFor="let match of matches(i)">
+			<ng-container *ngIf="match; else empty">
+				<li [ngClass]="{'game': true, 'game-top':true, 'winner':match.winner && match.winner.email == match.player1.email}">
+					{{match.player1 ? match.player1.name : ""}}
+					<span *ngIf="canSetAsWinner(match); else p1selection" class="win-button" (click)="setWinner(match, match.player1)">Set as Winner</span>
+					<ng-template #p1selection>
+						<span *ngIf="match.player1.email === getSelection(match) && !match.winner">Selected</span>
+					</ng-template>
+				</li>
+				<li class="game game-spacer">&nbsp;</li>
+				<li [ngClass]="{'game': true, 'game-bottom':true, 'winner':match.winner && match.winner.email == match.player2.email}">
+					{{match.player2 ? match.player2.name : ""}}
+					<span *ngIf="canSetAsWinner(match); else p2selection" class="win-button" (click)="setWinner(match, match.player2)">Set as Winner</span>
+					<ng-template #p2selection>
+						<span *ngIf="match.player2.email === getSelection(match)  && !match.winner">Selected</span>
+					</ng-template>
+				</li>
+				<li class="game game-spacer invisible">&nbsp;</li>
+
+			</ng-container>
+			<ng-template #empty>
+				<li class="game game-top invisible">
+					<span>&nbsp;</span>
+				</li>
+				<li class="game game-spacer invisible">&nbsp;</li>
+				<li class="game game-bottom invisible">
+					<span>&nbsp;</span>
+				</li>
+				<li class="game game-spacer invisible">&nbsp;</li>
+			</ng-template>
+		</ng-container >
+	</ul>
+</div>

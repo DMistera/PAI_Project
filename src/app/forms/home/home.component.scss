@@ -1,0 +1,27 @@
+#wrapper {
+    margin: 4em;
+    padding: 2em;
+    opacity: 95%;
+    width: fit-content;
+    height: fit-content;
+}
+
+#background {
+    background-image: url("../../../assets/sports1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    //position: absolute;
+    //overflow: hidden;
+    min-height: 100vh;
+    height: fit-content;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.space {
+    flex: 1 1 auto;
+}

@@ -1,0 +1,63 @@
+<div class="main" *ngIf="tournament$ | async as tournament; else loading">
+    <ng-container *ngIf="user$ | async as user">
+        <mat-card-title>
+            {{tournament.name}}
+        </mat-card-title>
+        <mat-card-subtitle *ngIf="tournament.organizer">
+            Organized by: {{tournament.organizer.name}} {{tournament.organizer.surname}}
+        </mat-card-subtitle>
+        <mat-card-content>
+            <p>Status: {{tournament.status}}</p>
+            <p>Maximum number of players: {{tournament.maxPlayers}}</p>
+            <p>Address: {{tournament.address}}</p>
+            <p>Description: {{tournament.description}}</p>
+            <p>Registration closing date date: {{beautifyDate(tournament.registrationDate)}} </p>
+            <p>Starting date: {{beautifyDate(tournament.startDate)}}</p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button *ngIf="hasJoined(tournament, user) && tournament.status == 'REGISTRATION'" mat-raised-button color="warn" (click)="leave(tournament)">Leave</button>
+            <button *ngIf="!hasJoined(tournament, user) && tournament.status == 'REGISTRATION'" mat-raised-button color="primary" (click)="join(tournament)">Join</button>
+            <button *ngIf="isOwner(tournament, user)" mat-raised-button (click)="edit(tournament)">Edit</button>
+            <button *ngIf="isOwner(tournament, user) && tournament.status == 'REGISTRATION'" mat-raised-button color="primary" (click)="close(tournament)">Close Registration</button>
+            <button *ngIf="isOwner(tournament, user) && tournament.status == 'REGISTRATION_CLOSED'" mat-raised-button color="primary" (click)="start(tournament)">Start</button>
+            <button *ngIf="isOwner(tournament, user) && tournament.status == 'IN_PROGRESS'" mat-raised-button color="primary" (click)="finish(tournament)">Finish</button>
+            <button *ngIf="isOwner(tournament, user)" mat-raised-button color="warn" (click)="delete(tournament)">Delete</button>
+        </mat-card-actions>
+        <mat-tab-group>
+            <mat-tab label="Participants">
+                <table id="participant-table" mat-table [dataSource]="tournament.participants">
+                    <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} {{element.surname}} </td>
+                    </ng-container> 
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> Actions </th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <button mat-button color="primary" >View</button>
+                        </td>
+                    </ng-container>  
+                    <tr mat-header-row *matHeaderRowDef="participantTableColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: participantTableColumns;"></tr>
+                </table>
+            </mat-tab>
+            <mat-tab label="Bracket"> 
+                <app-tournament-bracket [editable]="tournament.status == 'IN_PROGRESS'" [tournament]="tournament" [user]="user"></app-tournament-bracket>
+            </mat-tab>
+            <mat-tab label="Location" *ngIf="tournament.address && tournament.address.length > 0"> 
+                <google-map *ngIf="location$ | async as location; else noMap" [center]="location">
+                    <map-marker
+                    [position]="location"
+                    [label]="tournament.name"
+                  >
+                  </map-marker>
+                </google-map>
+                <ng-template #noMap>
+                    <p>Can't find this address on the map :(</p>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </ng-container>
+</div>
+<ng-template #loading>
+    Loading...
+</ng-template>

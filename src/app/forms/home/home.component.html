@@ -1,0 +1,13 @@
+<mat-toolbar *ngIf="user$ | async as user" color="primary">
+    <span>Tournament Brackets </span>
+    <button mat-button (click)="navigate('tournaments')">View</button>
+    <button mat-button (click)="navigate('tournament-edit', '0')">Create</button>
+    <span class="space"></span>
+    <span>Logged in as {{user.email}}.</span>
+    <button mat-button (click)="logout()">Logout</button>
+</mat-toolbar>
+<div id="background">
+    <mat-card id="wrapper">
+        <router-outlet></router-outlet>
+    </mat-card>
+</div>
