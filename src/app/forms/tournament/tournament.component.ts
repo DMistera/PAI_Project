@@ -106,9 +106,11 @@ export class TournamentComponent implements OnInit {
   }
 
   finish(tournament: Tournament) {
-    this.tournamentService.finish(tournament.id).subscribe(() => {
-      this.snackBar.open(`You have successfully finished ${tournament.name}!`, `Close`);
-    });
+    this.confirmService.confirm(`Are you sure you want to finish ${tournament.name}?`, () => {
+      this.tournamentService.finish(tournament.id).subscribe(() => {
+        this.snackBar.open(`You have successfully finished ${tournament.name}!`, `Close`);
+      });
+    })
   }
 
   delete(tournament : Tournament) {
